@@ -9,7 +9,7 @@ class AlbumsHandler {
     this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
     this.postLikeAlbumByIdHandler = this.postLikeAlbumByIdHandler.bind(this);
     this.deleteLikeAlbumByIdHandler = this.deleteLikeAlbumByIdHandler.bind(this);
-    this.getLikeAlbumByIdHandler =  this.getLikeAlbumByIdHandler.bind(this);
+    this.getLikeAlbumByIdHandler = this.getLikeAlbumByIdHandler.bind(this);
   }
 
   async postAlbumHandler(request, h) {
@@ -67,7 +67,7 @@ class AlbumsHandler {
     const { id } = request.params;
     const { id: credentialId } = request.auth.credentials;
 
-    //Cek apakah album ada
+    // Cek apakah album ada
     await this._service.getAlbumById(id);
 
     await this._service.verifyLikeAlbum(id, credentialId);
@@ -80,14 +80,13 @@ class AlbumsHandler {
 
     response.code(201);
     return response;
-    
   }
 
   async deleteLikeAlbumByIdHandler(request, h) {
     const { id } = request.params;
     const { id: credentialId } = request.auth.credentials;
 
-    await this._service.deleteLikeAlbum(id,credentialId);
+    await this._service.deleteLikeAlbum(id, credentialId);
 
     const response = h.response({
       status: 'success',
@@ -99,14 +98,14 @@ class AlbumsHandler {
   }
 
   async getLikeAlbumByIdHandler(request, h) {
-    const {id} = request.params;
-    const {likes,isFromCache} = await this._service.countLikeAlbum(id);
+    const { id } = request.params;
+    const { likes, isFromCache } = await this._service.countLikeAlbum(id);
 
     const response = h.response({
       status: 'success',
       data: {
-        likes:parseInt(likes),
-      }
+        likes: parseInt(likes, 10),
+      },
     });
 
     response.code(200);

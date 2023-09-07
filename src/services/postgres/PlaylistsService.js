@@ -38,10 +38,6 @@ class PlaylistsService {
 
     const result = await this._pool.query(query);
 
-    if(!result.rows.length){
-        throw new InvariantError('Playlist tidak ditemukan');
-    }
-
     return result.rows;
   }
 

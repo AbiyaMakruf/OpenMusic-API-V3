@@ -1,10 +1,11 @@
 // Server
 require('dotenv').config();
+const path = require('path');
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
-const ClientError = require('./exceptions/ClientError');
-const path = require('path');
 const Inert = require('@hapi/inert');
+const ClientError = require('./exceptions/ClientError');
+const config = require('./utils/config');
 
 // Albums
 const albums = require('./api/albums');
@@ -59,7 +60,6 @@ const UploadsValidator = require('./validator/uploads');
 // Cache
 const CacheService = require('./services/redis/CacheService');
 
-
 const init = async () => {
   const cacheService = new CacheService();
   const albumsService = new AlbumsService(cacheService);
@@ -70,11 +70,11 @@ const init = async () => {
   const playlistsSongsService = new PlaylistsSongsService();
   const collaborationsService = new CollaborationsService();
   const playlistSongActivitiesService = new PlaylistSongActivitiesService();
-  const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images')); 
+  const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
 
   const server = Hapi.server({
-    host: process.env.HOST,
-    port: process.env.PORT,
+    host: config.app.host,
+    port: config.app.port,
   });
 
   // registrasi plugin eksternal
